@@ -18,16 +18,27 @@ const UserSchema = new mongose.Schema({
     gender: {
         type: String,
         required: true
-    },   
+    },  
+    HasAdminAccess: { 
+        type: Boolean,
+        default: false
+    },
     phone: {
         type: String,
         required: true
     },
     role: {
         type: String,
-        enum ['user', 'admin'],
-        default: 'user'
-    }
+        enum: ['superadmin','salesperson'],
+        default: 'salesperson'
+    },
 
-    timestamps: true
-}); 
+   
+},
+{ 
+ timestamps: true}
+); 
+
+const User = mongose.model('User', UserSchema);
+
+module.exports = User; // Export the User model

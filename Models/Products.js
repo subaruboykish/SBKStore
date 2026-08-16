@@ -1,31 +1,37 @@
-const mongose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
 
-
-const UserSchema = new mongose.Schema({
+const productSchema = new mongoose.Schema(
+{
     name: {
         type: String,
         required: true
     },
     size: {
-        type: String,   
-        required: true  
+        type: String,
+        required: true
     },
     description: {
         type: String,
-        required: true      
+        required: true
     },
     price: {
         type: Number,
-        required: true  
-    }, 
+        required: true
+    },
     quantity: {
         type: Number,
-        required: true  
+        required: true
     },
+    color: {
+        type: String,
+        required: true
+    }
+},
+{
+    timestamps: true
+}
+);
 
-    timestamps: true    
+const Product = mongoose.model('Product', productSchema);
 
-})
-
-const Product = mongose.model('Product', productSchema);
+module.exports = Product;
