@@ -1,20 +1,36 @@
-const express = require('express');
+require('dotenv').config();
 const dotenv = require('dotenv');
+
+console.log('EMAIL_USER:', process.env.EMAIL_USER);
+console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Password exists' : 'Password missing');
+
+
+// Load environment variables BEFORE importing routes/config files
+dotenv.config();
+
+const express = require('express');
 const connectDB = require('./Config/databaseConfig');
+
 const app = express();
 
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Connect to MongoDB
+connectDB();
+
+// Import routes AFTER dotenv.config()
 const productRoutes = require('./Routes/ProductRoute');
 const userRoutes = require('./Routes/UserRoute');
 
-dotenv.config(); // Load environment variables from .env file
-connectDB(); // Connect to the database
+// Routes
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
 
-app.use(express.json()); // Middleware to parse JSON request bodies
+// Start server
+const PORT = process.env.PORT || 5000;
 
-
-app.use('/products', productRoutes); //use the product routes for all requests starting with /products
-app.use('/users', userRoutes); //use the user routes for all requests starting with /users
-
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

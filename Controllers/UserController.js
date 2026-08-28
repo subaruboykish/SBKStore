@@ -96,30 +96,15 @@ const loginUser = async (req, res) => {
 
         // Generate token
         const jwt = require('jsonwebtoken');
-
         const token = jwt.sign(
-            {
-                id: user._id,
-                email: user.email,
-                name: user.name
-            },
+            { id: user._id, email: user.email, name: user.name, role: user.role, HasAdminAccess: user.HasAdminAccess },
             process.env.JWT_SECRET,
-            {
-                expiresIn: '1h'
-            }
+            {expiresIn: '1h'}
         );
 
-        res.status(200).json({
-            message: 'User logged in successfully',
-            token,
-            user
-        });
-
+        res.status(200).json({ message: 'User logged in successfully', token, role: user.role, HasAdminAccess: user.HasAdminAccess });
     } catch (error) {
-        res.status(400).json({
-            message: 'Error logging in user',
-            error: error.message
-        });
+        res.status(400).json({ message: 'Error logging in user', error: error.message });
     }
 };
 
